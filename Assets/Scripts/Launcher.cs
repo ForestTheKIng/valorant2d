@@ -25,6 +25,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
     [SerializeField] TMP_Text joinRoomErrorText;
+    public TMP_Text teamText;
 
     public PhotonView playerPrefab;
 
@@ -100,17 +101,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
 
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-        Player player = PhotonNetwork.LocalPlayer; // or replace with the desired player object
-        if (player.CustomProperties.ContainsKey(TEAM_PROPERTY_KEY))
-        {
-            object teamObj = player.CustomProperties[TEAM_PROPERTY_KEY];
-            int team = (int)teamObj;
-            Debug.Log("Player " + player.NickName + " is on team " + team);
-        }
-        else
-        {
-            Debug.Log("Player " + player.NickName + " does not have a team assigned.");
-        }
+
 
     }
     
@@ -128,6 +119,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.Instance.OpenMenu("loading");
     }
 
+    
     
     public void JoinRoom()
     {
@@ -151,6 +143,21 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         availableRooms = roomList;
+    }
+
+    public void Update() {
+        Player player = PhotonNetwork.LocalPlayer; // or replace with the desired player object
+
+        if (player.CustomProperties.ContainsKey(TEAM_PROPERTY_KEY))
+        {
+            object teamObj = player.CustomProperties[TEAM_PROPERTY_KEY];
+            int team = (int)teamObj;
+            teamText.text = "Player " + player.NickName + " is on team " + team;
+        }
+        else
+        {
+            teamText.text = "Player " + player.NickName + " does not have a team assigned.";
+        }
     }
 
 
