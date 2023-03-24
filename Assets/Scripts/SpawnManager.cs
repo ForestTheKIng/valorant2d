@@ -13,7 +13,13 @@ public class SpawnManager : MonoBehaviour
         spawnpoints = GetComponentsInChildren<SpawnPoint>();  
     }
 
-    public Transform GetSpawnPoint(){
-        return spawnpoints[Random.Range(0, spawnpoints.Length)].transform;
+    public Transform GetSpawnPoint(int team){
+        if (team == 0){
+            return spawnpoints[0].transform;
+        } else if (team == 1){
+            return spawnpoints[1].transform;
+        } else {
+            return spawnpoints[1].transform;
+        }        
     }
 }

@@ -38,15 +38,16 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             CreateController();
         }
     }
-    
+
+
     
     void CreateController(){
         Player player = PhotonNetwork.LocalPlayer; // or replace with the desired player object
-        Transform spawnpoint = SpawnManager.Instance.GetSpawnPoint();
+        object teamObj = player.CustomProperties[TEAM_PROPERTY_KEY];
+        int team = (int)teamObj;
+        Transform spawnpoint = SpawnManager.Instance.GetSpawnPoint(team);
         if (player.CustomProperties.ContainsKey(TEAM_PROPERTY_KEY))
         {
-            object teamObj = player.CustomProperties[TEAM_PROPERTY_KEY];
-            int team = (int)teamObj;
             if (team == 0) {
                 controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NeonContainer"), spawnpoint.position, spawnpoint.rotation, 0, new object[] {pv.ViewID });
             } else if (team == 1) {
@@ -89,6 +90,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void GetKill(){
         pv.RPC(nameof(RPC_GetKill), pv.Owner);
     }
+
 
     [PunRPC]
     void RPC_GetKill(){
