@@ -18,7 +18,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     int kills;
     int deaths;
-    Player player;
     
     public GameObject killFeedItem;
 
@@ -42,6 +41,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     
     
     void CreateController(){
+        Player player = PhotonNetwork.LocalPlayer; // or replace with the desired player object
         Transform spawnpoint = SpawnManager.Instance.GetSpawnPoint();
         if (player.CustomProperties.ContainsKey(TEAM_PROPERTY_KEY))
         {

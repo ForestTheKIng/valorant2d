@@ -16,16 +16,20 @@ public class Neon : MonoBehaviour
     public GameObject energyBar;
 
 
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && currentEnergy >= 0){
+        energyImage.fillAmount = currentEnergy / maxEnergy;
+        if (Input.GetKey(KeyCode.LeftShift) && currentEnergy >= 0){
             NeonMode();
         } else {
+            if (currentEnergy <= 100){
+                currentEnergy += 2 * Time.deltaTime;
+            }
             movement.moveSpeed = 5f;
             pp.SetActive(false);
+            outline.SetActive(false);
+            steps.GetComponent<ParticleSystem>().Pause();
             steps.SetActive(false);
-            energyBar.SetActive(false);
         }
     }
 
@@ -34,10 +38,11 @@ public class Neon : MonoBehaviour
         energyBar.SetActive(true);
         currentEnergy -= 7 * Time.deltaTime;
         if (energyImage != null){
-            energyImage.fillAmount = currentEnergy / maxEnergy;
             movement.moveSpeed = NeonModeSpeed;
             pp.SetActive(true);
             steps.SetActive(true);
+            steps.GetComponent<ParticleSystem>().Play();
+            outline.SetActive(true);
         }
     }
 }

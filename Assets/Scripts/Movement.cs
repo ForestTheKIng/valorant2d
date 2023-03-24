@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class Movement : MonoBehaviourPunCallbacks, IDamageable
 {
+    private const string TEAM_PROPERTY_KEY = "team";
     PlayerManager playerManager;
     public float moveSpeed = 5f;
     [SerializeField] Image healthbarImage;
@@ -99,14 +100,34 @@ public class Movement : MonoBehaviourPunCallbacks, IDamageable
     }
     private void FixedUpdate()
     {
-        if(pv.IsMine && jett.isDashing == false)
+        Player player = PhotonNetwork.LocalPlayer; // or replace with the desired player object
+        if (player.CustomProperties.ContainsKey(TEAM_PROPERTY_KEY))
         {
-            rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+            object teamObj = player.CustomProperties[TEAM_PROPERTY_KEY];
+            int team = (int)teamObj;
+            if (team == 0) {
+                if(pv.IsMine)
+                {
+                    rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
 
-            Vector2 lookDir = mousePos - rb.position;
-            float angle = Mathf.Atan2(lookDir.y ,lookDir.x) * Mathf.Rad2Deg - 90f;
-            rb.rotation = angle;
+                    Vector2 lookDir = mousePos - rb.position;
+                    float angle = Mathf.Atan2(lookDir.y ,lookDir.x) * Mathf.Rad2Deg - 90f;
+                    rb.rotation = angle;
+                }
+            } else if (team == 1) {
+                if(pv.IsMine && jett.isDashing == false)
+                {
+                    rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+
+                    Vector2 lookDir = mousePos - rb.position;
+                    float angle = Mathf.Atan2(lookDir.y ,lookDir.x) * Mathf.Rad2Deg - 90f;
+                    rb.rotation = angle;
+                }
+            } else {
+                Debug.LogError("Erorr: No team assigned");
+            }
         }
+
     }
 
     public void TakeDamage(float damage){
