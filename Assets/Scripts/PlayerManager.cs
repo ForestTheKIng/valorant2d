@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     int kills;
     int deaths;
+    Player player;
     
     public GameObject killFeedItem;
 
@@ -38,26 +39,22 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             CreateController();
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
-    public static int GetPlayerTeam(Player player)
-    {
-        object teamObj;
-        if (player.CustomProperties.TryGetValue(TEAM_PROPERTY_KEY, out teamObj))
-        {
-            return (int)teamObj;
-        }
-        return -1;
-    }
     
     void CreateController(){
         Transform spawnpoint = SpawnManager.Instance.GetSpawnPoint();
-        controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerContainer"), spawnpoint.position, spawnpoint.rotation, 0, new object[] {pv.ViewID });
+        if (player.CustomProperties.ContainsKey(TEAM_PROPERTY_KEY))
+        {
+            object teamObj = player.CustomProperties[TEAM_PROPERTY_KEY];
+            int team = (int)teamObj;
+            if (team == 0) {
+                controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NeonContainer"), spawnpoint.position, spawnpoint.rotation, 0, new object[] {pv.ViewID });
+            } else if (team == 1) {
+                controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "JettContainer"), spawnpoint.position, spawnpoint.rotation, 0, new object[] {pv.ViewID });
+            } else {
+                Debug.LogError("Erorr: No team assigned");
+            }
+        }
     }
 
     public void Die(){

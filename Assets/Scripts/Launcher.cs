@@ -25,6 +25,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
     [SerializeField] TMP_Text joinRoomErrorText;
+
     public TMP_Text teamText;
 
     public PhotonView playerPrefab;
@@ -158,6 +159,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             teamText.text = "Player " + player.NickName + " does not have a team assigned.";
         }
+        
     }
 
 

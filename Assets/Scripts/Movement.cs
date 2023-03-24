@@ -10,27 +10,20 @@ public class Movement : MonoBehaviourPunCallbacks, IDamageable
 {
     PlayerManager playerManager;
     public float moveSpeed = 5f;
-
     [SerializeField] Image healthbarImage;
-
     [SerializeField] GameObject ui;
-
     public Rigidbody2D rb;
     public Camera cam;
-
     Vector2 movement;
     Vector2 mousePos;
-
     PhotonView pv;
     public Jett jett;
-
     [SerializeField] Item[] items;
-
     int itemIndex;
     int previousItemIndex = -1;
-    
     const float maxHealth = 100f;
     public float currentHealth = maxHealth;
+
 
     void Awake() 
     {
@@ -46,6 +39,7 @@ public class Movement : MonoBehaviourPunCallbacks, IDamageable
             Destroy(ui);
         } 
     }
+
 
     // Update is called once per frame
     void Update()
@@ -72,6 +66,7 @@ public class Movement : MonoBehaviourPunCallbacks, IDamageable
                 items[itemIndex].Use();
             }
         }
+
     }
 
     void EquipItem(int _index){
