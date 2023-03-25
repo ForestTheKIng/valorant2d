@@ -21,6 +21,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     
     public GameObject killFeedItem;
 
+    public int roundNumber;
+
     [SerializeField] GameObject killFeedItemPrefab;
     [SerializeField] Transform killFeedContent;
 
@@ -38,7 +40,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             CreateController();
         }
     }
-
 
     
     void CreateController(){
@@ -90,6 +91,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void GetKill(){
         pv.RPC(nameof(RPC_GetKill), pv.Owner);
     }
+
+    public void StartRound(){
+        return;
+    }
+    
 
 
     [PunRPC]

@@ -19,6 +19,8 @@ public class Timer : MonoBehaviour
     public GameObject barriers;
 
     // Update is called once per frame
+
+
     void Update()
     {
         if (gameStarted == true){
